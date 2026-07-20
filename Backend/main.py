@@ -16,13 +16,13 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 from core.database import Base, engine
 
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -80,6 +80,13 @@ app.include_router(elevenlabs.router)
 def home():
     return {"message": "API running"}
 
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy"
+    }
+    
 # =========================
 # SCHEDULER (SAFE START)
 # =========================
